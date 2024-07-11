@@ -49,7 +49,7 @@ The following test cases have been developed to validate different aspects of th
   2. Examine the cookies in the response to ensure no sensitive information is present.
 - **Expected Result**: Cookies should not contain any sensitive information.
 
-### Test 6: Verify Response Time
+### Test 5: Verify Response Time
 
 - **Endpoint**: [Cat Facts API](https://alexwohlbruck.github.io/cat-facts/)
 - **Description**: Measure and validate the response time of API requests under normal conditions.
@@ -59,7 +59,7 @@ The following test cases have been developed to validate different aspects of th
   3. Calculate the average response time and compare it against defined performance criteria.
 - **Expected Result**: The average response time should meet or exceed performance expectations to ensure optimal API performance.
 
-### Test 7: Handle Rate Limits
+### Test 6: Handle Rate Limits
 
 - **Endpoint**: [Cat Facts API](https://alexwohlbruck.github.io/cat-facts/)
 - **Description**: Test how the API handles requests when rate limits are exceeded.
@@ -76,7 +76,7 @@ The validation methods used in these tests were chosen to ensure thorough testin
 - **Test 2** checks the Content-Type header to verify that the API response format meets expected standards.
 - **Test 3** validates the presence of specific HTML elements to ensure the integrity of the API's structure.
 - **Test 4** focuses on security by ensuring that no sensitive information is inadvertently exposed through cookies.
-- **Test 6** measures response times to ensure optimal performance under typical usage conditions.
-- **Test 7** tests the API's resilience against excessive requests, ensuring smooth operation under heavy loads.
+- **Test 5** measures response times to ensure optimal performance under typical usage conditions.
+- **Test 6** tests the API's resilience against excessive requests, ensuring smooth operation under heavy loads.
 
 These tests collectively aim to enhance the reliability, security, performance, and usability of the Cat Facts API, ensuring that it meets user expectations and industry standards.
