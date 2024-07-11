@@ -49,14 +49,24 @@ The following test cases have been developed to validate different aspects of th
   2. Examine the cookies in the response to ensure no sensitive information is present.
 - **Expected Result**: Cookies should not contain any sensitive information.
 
-### Test 5: Validate Static Content and Links
+### Test 6: Verify Response Time
 
 - **Endpoint**: [Cat Facts API](https://alexwohlbruck.github.io/cat-facts/)
-- **Description**: Ensure that static content (like images, CSS files) and their associated links are valid and accessible.
+- **Description**: Measure and validate the response time of API requests under normal conditions.
 - **Steps**:
-  1. Send a GET request to the Cat Facts API.
-  2. Validate the presence and accessibility of static content links (e.g., images, CSS files).
-- **Expected Result**: All static content should be present and accessible without any errors.
+  1. Send multiple GET requests to various endpoints of the Cat Facts API.
+  2. Record the response times for each request.
+  3. Calculate the average response time and compare it against defined performance criteria.
+- **Expected Result**: The average response time should meet or exceed performance expectations to ensure optimal API performance.
+
+### Test 7: Handle Rate Limits
+
+- **Endpoint**: [Cat Facts API](https://alexwohlbruck.github.io/cat-facts/)
+- **Description**: Test how the API handles requests when rate limits are exceeded.
+- **Steps**:
+  1. Send multiple GET requests to the Cat Facts API within a short time frame to exceed the rate limit (if applicable).
+  2. Validate the response status code and message returned by the API.
+- **Expected Result**: The API should return an appropriate status code (e.g., 429 Too Many Requests) and a clear message indicating that rate limits have been exceeded.
 
 ## Validation Explanation
 
@@ -66,6 +76,7 @@ The validation methods used in these tests were chosen to ensure thorough testin
 - **Test 2** checks the Content-Type header to verify that the API response format meets expected standards.
 - **Test 3** validates the presence of specific HTML elements to ensure the integrity of the API's structure.
 - **Test 4** focuses on security by ensuring that no sensitive information is inadvertently exposed through cookies.
-- **Test 5** ensures that all static content and associated links are correctly loaded and accessible, enhancing overall usability.
+- **Test 6** measures response times to ensure optimal performance under typical usage conditions.
+- **Test 7** tests the API's resilience against excessive requests, ensuring smooth operation under heavy loads.
 
 These tests collectively aim to enhance the reliability, security, performance, and usability of the Cat Facts API, ensuring that it meets user expectations and industry standards.
