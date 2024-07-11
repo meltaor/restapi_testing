@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "0746ea0c-48fd-499a-bf9d-63fbce9c0f8d",
+		"name": "Cat Facts API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36934043"
+	},
+	"item": [
+		{
+			"name": "Test 1: Validating All Links and Their HTTP Status Codes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Load the Cheerio library for HTML parsing\r",
+							"var cheerio = require('cheerio');\r",
+							"\r",
+							"// Basic response validation\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response content type should be text/html\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");\r",
+							"});\r",
+							"\r",
+							"// Load the HTML response into Cheerio\r",
+							"var $ = cheerio.load(pm.response.text());\r",
+							"\r",
+							"// Extract all hyperlinks\r",
+							"var links = [];\r",
+							"$(\"a\").each(function (index, element) {\r",
+							"    var link = $(element).attr(\"href\");\r",
+							"    if (link) {\r",
+							"        links.push(link);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// Validate that links were found\r",
+							"pm.test(\"Page should contain some links\", function () {\r",
+							"    pm.expect(links.length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"// Iterate through each link and validate status code\r",
+							"links.forEach(function (link) {\r",
+							"    pm.test(\"Link \" + link + \" should return status code 200\", function () {\r",
+							"        pm.sendRequest(link, function (err, response) {\r",
+							"            pm.expect(response).to.have.status(200);\r",
+							"        });\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://alexwohlbruck.github.io/cat-facts/",
+				"description": "1. **Description**: Validate that all hyperlinks on the page lead to valid URLs and return a status code of 200.\n    \n2. **Steps**:\n    \n\n- Send a GET request to `https://alexwohlbruck.github.io/cat-facts/`.\n    \n- Extract all hyperlinks from the response.\n    \n- For each hyperlink, send a GET request to validate the HTTP status code.\n    \n- Ensure all hyperlinks return a status code of 200.\n    \n\n3\\. **Expected Result**: All hyperlinks should lead to valid URLs and return a status code of 200."
+			},
+			"response": []
+		},
+		{
+			"name": "Test 2: Verify Content-Type Header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Content-Type header is text/html; charset=utf-8\", function () {\r",
+							"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"    pm.expect(contentType).to.be.a(\"string\");\r",
+							"    pm.expect(contentType.toLowerCase()).to.include(\"text/html; charset=utf-8\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://alexwohlbruck.github.io/cat-facts/",
+				"description": "- **Description**: Ensure that the API endpoint returns the correct Content-Type header in the response.\n    \n- **Steps**: Send a GET request to the API endpoint.\n    \n- **Expected Result**: The response status code should be 200, indicating a successful request. The Content-Type header in the response should be `text/html; charset=utf-8`.\n    \n- **Validation**: Check that the Content-Type header exactly matches `text/html; charset=utf-8`."
+			},
+			"response": []
+		},
+		{
+			"name": "Test 3: Validate the Presence of HTML Elements",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"HTML contains <html> tag\", function () {\r",
+							"    pm.expect(pm.response.text()).to.match(/<html\\b[^>]*>/);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"HTML contains <head> tag\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include('<head>');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"HTML contains <body> tag\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include('<body>');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"HTML contains <title> tag\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include('<title>');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://alexwohlbruck.github.io/cat-facts/"
+			},
+			"response": []
+		},
+		{
+			"name": "Test 4: Ensure No Sensitive Information in Cookies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"No sensitive information in cookies\", function () {\r",
+							"    const cookies = pm.cookies.toObject();\r",
+							"    pm.expect(cookies).to.not.have.property(\"password\");\r",
+							"    pm.expect(cookies).to.not.have.property(\"token\");\r",
+							"    pm.expect(cookies).to.not.have.property(\"api_key\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://alexwohlbruck.github.io/cat-facts/",
+				"description": "**Description**: Ensure the response headers contain security-related headers like Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, and Strict-Transport-Security.\n\n**Steps**:  \n1\\. Send a GET request to [https://alexwohlbruck.github.io/cat-facts/](https://alexwohlbruck.github.io/cat-facts/).\n\n**Expected Result**: Security-related headers should be present.\n\n**Validation**: Verify that each of the expected security-related headers is present in the response headers."
+			},
+			"response": []
+		},
+		{
+			"name": "Test 5: Validate Static Content and Links",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Load the Cheerio library for HTML parsing\r",
+							"var cheerio = require('cheerio');\r",
+							"\r",
+							"pm.test(\"Response content type should be text/html\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");\r",
+							"});\r",
+							"\r",
+							"// Load the HTML response into Cheerio\r",
+							"var $ = cheerio.load(pm.response.text());\r",
+							"\r",
+							"// Validate presence of specific static content\r",
+							"pm.test(\"Page should contain specific header text\", function () {\r",
+							"    var headerText = $(\"h1\").text();\r",
+							"    pm.expect(headerText).to.include(\"cat-facts\");\r",
+							"});\r",
+							"\r",
+							"// Validate presence of links\r",
+							"pm.test(\"Page should contain some links\", function () {\r",
+							"    var links = $(\"a\");\r",
+							"    pm.expect(links.length).to.be.above(0);\r",
+							"    links.each(function (index, element) {\r",
+							"        pm.expect($(element).attr(\"href\")).to.not.be.empty;\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://alexwohlbruck.github.io/cat-facts/",
+				"description": "Description: Validate the presence of specific static content and various links on the site, ensuring we handle scenarios where navigation might be different or absent.\r\n\r\nSteps:\r\n\r\nSend a GET request to https://alexwohlbruck.github.io/cat-facts/.\r\nValidate the response status code.\r\nValidate the response content type.\r\nCheck for the presence of specific static content (e.g., header).\r\nCheck for the presence of links (navigation or other sections).\r\nExpected Result:\r\n\r\nThe response should contain specific static content and at least some links.\r\nValidation:\r\n\r\nCheck the status code.\r\nCheck the content type.\r\nValidate the presence of specific text or HTML elements.\r\nValidate the presence of links."
+			},
+			"response": []
+		}
+	]
+}
