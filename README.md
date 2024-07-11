@@ -2,6 +2,9 @@
 
 This repository contains a collection of tests for the Cat Facts API, implemented using Postman.
 
+## Pre-requisities
+Postman
+
 ## Overview
 
 The tests in this collection aim to ensure the reliability and correctness of the Cat Facts API by validating various aspects of its functionality and response characteristics.
